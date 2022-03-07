@@ -1,7 +1,7 @@
 GOPATH:=$(shell go env GOPATH)
 VERSION=$(shell git describe --tags --always)
 INTERNAL_PROTO_FILES=$(shell find internal -name  *.proto)
-API_PROTO_FILES=$(shell cd ../../ && find api/$(APP_NAME) -name *.proto)
+API_PROTO_FILES=$(shell cd ../../ && find api/$(APP_NAME) -name [^error]*.proto)
 ERROR_PROTO_FILES=$(shell cd ../../ && find api/$(APP_NAME) -name error*.proto)
 APP_NAME=demo
 
@@ -33,7 +33,7 @@ errors:
            $(ERROR_PROTO_FILES)
 
 .PHONY: config
-# generate internal proto
+# generate config proto code
 config:
 	protoc --proto_path=. \
 	       --proto_path=../../third_party \
@@ -41,7 +41,7 @@ config:
 	       $(INTERNAL_PROTO_FILES)
 
 .PHONY: validate
-# generate internal proto
+# generate validate code
 validate:
 	cd ../../ && protoc --proto_path=. \
                  		--proto_path=./third_party \
@@ -69,6 +69,14 @@ api:
 					 	  --go-grpc_out=paths=source_relative:. \
 	              $(API_PROTO_FILES)
 
+.PHONY: service
+# generate service proto
+service:
+	 cd ../../ && $(foreach proto_file,$(API_PROTO_FILES), \
+    				echo $(proto_file); \
+            		kratos proto server $(proto_file) -t app/$(APP_NAME)/internal/service; \
+    				)\
+     echo 'generate API proto file done!'
 
 .PHONY: build
 # build
@@ -85,6 +93,7 @@ generate:
 all:
 	make api;
 	make errors;
+	make service;
 	make config;
 	make generate;
 

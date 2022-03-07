@@ -13,24 +13,24 @@ import (
 	"fiber-demo/app/demo/internal/server"
 	"fiber-demo/app/demo/internal/service"
 	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
 )
 
 // Injectors from wire.go:
 
 // initApp init kratos application.
-func initApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
+func initApp(confServer *conf.Server, registry *conf.Registry, confData *conf.Data, logger *conf.Logger) (*kratos.App, func(), error) {
+	logLogger := data.NewLogger(logger)
+	dataData, cleanup, err := data.NewData(confData, logLogger)
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase, logger)
-	xhttpServer := server.NewHTTPServer(confServer, greeterService, logger)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
+	greeterRepo := data.NewGreeterRepo(dataData, logLogger)
+	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logLogger)
+	greeterService := service.NewGreeterService(greeterUsecase, logLogger)
+	xhttpServer := server.NewHTTPServer(confServer, greeterService, logLogger)
+	grpcServer := server.NewGRPCServer(confServer, greeterService, logLogger)
 	registrar := data.NewRegistrar(registry)
-	app := newApp(logger, xhttpServer, grpcServer, registrar)
+	app := newApp(logLogger, xhttpServer, grpcServer, registrar)
 	return app, func() {
 		cleanup()
 	}, nil

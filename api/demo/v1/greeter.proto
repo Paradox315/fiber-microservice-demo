@@ -11,6 +11,7 @@ option java_package = "dev.kratos.api.demo.v1";
 option java_outer_classname = "DemoProtoV1";
 
 // The greeting service definition.
+// @Path("demo")
 service Greeter {
   // Gets a greeting for a user.
   rpc List (PageRequest) returns (HelloReply)  {
@@ -22,7 +23,7 @@ service Greeter {
   // Gets a greeting for a user.
   rpc Get (HelloRequest) returns (HelloReply)  {
     option (google.api.http) = {
-      get: "/get/:name"
+      get: "/get/{name}"
     };
   }
 
@@ -56,8 +57,8 @@ message HelloRequest {
 }
 
 message PageRequest {
-  int32 page_num = 1 [(validate.rules).int32 = {gt: 0}];
-  int32 page_size = 2;
+  uint32 page_num = 1 [(validate.rules).uint32 = {gt: 0}];
+  uint32 page_size = 2;
 }
 
 // The response message containing the greetings

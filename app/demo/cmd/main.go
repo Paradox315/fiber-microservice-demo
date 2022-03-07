@@ -10,7 +10,6 @@ import (
 	"github.com/go-kratos/kratos/v2/config"
 	"github.com/go-kratos/kratos/v2/config/file"
 	"github.com/go-kratos/kratos/v2/log"
-	"github.com/go-kratos/kratos/v2/middleware/tracing"
 	"github.com/go-kratos/kratos/v2/registry"
 	"github.com/go-kratos/kratos/v2/transport/grpc"
 	"github.com/go-kratos/kratos/v2/transport/xhttp"
@@ -29,7 +28,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "app/demo/configs", "config path, eg: -conf config.yaml")
 }
 
 func newApp(logger log.Logger, hs *xhttp.Server, gs *grpc.Server, rr registry.Registrar) *kratos.App {
@@ -49,15 +48,6 @@ func newApp(logger log.Logger, hs *xhttp.Server, gs *grpc.Server, rr registry.Re
 
 func main() {
 	flag.Parse()
-	logger := log.With(log.NewStdLogger(os.Stdout),
-		"ts", log.DefaultTimestamp,
-		"caller", log.DefaultCaller,
-		"service.id", id,
-		"service.name", Name,
-		"service.version", Version,
-		"trace_id", tracing.TraceID(),
-		"span_id", tracing.SpanID(),
-	)
 	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
@@ -79,7 +69,7 @@ func main() {
 		panic(err)
 	}
 
-	app, cleanup, err := initApp(bc.Server, &rc, bc.Data, logger)
+	app, cleanup, err := initApp(bc.Server, &rc, bc.Data, bc.Logger)
 	if err != nil {
 		panic(err)
 	}

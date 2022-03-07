@@ -13,3 +13,12 @@ data:
     addr: 127.0.0.1:6379
     read_timeout: 0.2s
     write_timeout: 0.2s
+logger:
+  prefix: fiber-demo
+  level: info
+  format: console
+  directory: log
+  encode_level: CapitalColorLevelEncoder
+  stacktrace_key: stacktrace
+  show_line: false
+  log_in_console: true

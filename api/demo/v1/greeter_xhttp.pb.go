@@ -6,6 +6,7 @@ package v1
 
 import (
 	context "context"
+	middleware "github.com/go-kratos/kratos/v2/middleware"
 	xhttp "github.com/go-kratos/kratos/v2/transport/xhttp"
 	ApiState "github.com/go-kratos/kratos/v2/transport/xhttp/apistate"
 	binding "github.com/go-kratos/kratos/v2/transport/xhttp/binding"
@@ -18,7 +19,9 @@ var _ = new(context.Context)
 var _ = binding.BindBody
 
 const _ = xhttp.SupportPackageIsVersion1
+const _ = middleware.SupportPackageIsVersion1
 
+// The greeting service definition.
 type GreeterXHTTPServer interface {
 	Add(context.Context, *HelloRequest) (*HelloReply, error)
 	Del(context.Context, *HelloRequest) (*HelloReply, error)
@@ -29,7 +32,9 @@ type GreeterXHTTPServer interface {
 
 func RegisterGreeterXHTTPServer(s *xhttp.Server, srv GreeterXHTTPServer) {
 	s.Route(func(r fiber.Router) {
-		api := r.Group("api/demo/v1/greeter")
+		api := r.Group("api/demo")
+		{
+		}
 		api.Get("/list", _Greeter_List0_XHTTP_Handler(srv))
 		api.Get("/get/:name", _Greeter_Get0_XHTTP_Handler(srv))
 		api.Post("/", _Greeter_Add0_XHTTP_Handler(srv))
@@ -38,6 +43,7 @@ func RegisterGreeterXHTTPServer(s *xhttp.Server, srv GreeterXHTTPServer) {
 	})
 }
 
+// Gets a greeting for a user.
 func _Greeter_List0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		var in PageRequest
@@ -53,6 +59,7 @@ func _Greeter_List0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	}
 }
 
+// Gets a greeting for a user.
 func _Greeter_Get0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		var in HelloRequest
@@ -68,6 +75,7 @@ func _Greeter_Get0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	}
 }
 
+// Adds a greeting for a user.
 func _Greeter_Add0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		var in HelloRequest
@@ -83,6 +91,7 @@ func _Greeter_Add0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	}
 }
 
+// Adds a greeting for a user.
 func _Greeter_Edit0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		var in HelloRequest
@@ -98,6 +107,7 @@ func _Greeter_Edit0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	}
 }
 
+// Adds a greeting for a user.
 func _Greeter_Del0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		var in HelloRequest
