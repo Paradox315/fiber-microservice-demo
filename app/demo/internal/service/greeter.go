@@ -24,24 +24,28 @@ func (s *GreeterService) List(ctx context.Context, req *pb.PageRequest) (*pb.Hel
 		Message: req.String(),
 	}, nil
 }
+
 func (s *GreeterService) Get(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {
 	s.log.WithContext(ctx).Infof("Get Received: %v", req.String())
 	return &pb.HelloReply{
 		Message: req.String(),
 	}, nil
 }
+
 func (s *GreeterService) Add(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {
 	s.log.WithContext(ctx).Infof("Add Received: %v", req.String())
 	return &pb.HelloReply{
 		Message: req.String(),
 	}, nil
 }
+
 func (s *GreeterService) Edit(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {
 	s.log.WithContext(ctx).Infof("Edit Received: %v", req.String())
 	return &pb.HelloReply{
 		Message: req.String(),
 	}, nil
 }
+
 func (s *GreeterService) Del(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {
 	s.log.WithContext(ctx).Infof("Del Received: %v", req.String())
 	return &pb.HelloReply{

@@ -158,10 +158,10 @@ func (m *PageRequest) validate(all bool) error {
 
 	var errors []error
 
-	if m.GetPageNum() <= 0 {
+	if m.GetPageNum() <= 5 {
 		err := PageRequestValidationError{
 			field:  "PageNum",
-			reason: "value must be greater than 0",
+			reason: "value must be greater than 5",
 		}
 		if !all {
 			return err

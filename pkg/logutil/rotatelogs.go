@@ -1,4 +1,4 @@
-package utils
+package logutil
 
 import (
 	"github.com/natefinch/lumberjack"

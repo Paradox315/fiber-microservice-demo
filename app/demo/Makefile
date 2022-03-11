@@ -93,8 +93,10 @@ generate:
 all:
 	make api;
 	make errors;
-	make service;
 	make config;
+	make validate;
+	make swagger;
+	make service;
 	make generate;
 
 # show help

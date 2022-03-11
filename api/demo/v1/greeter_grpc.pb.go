@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GreeterClient interface {
 	// Gets a greeting for a user.
+	// @Validate
 	List(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	// Gets a greeting for a user.
 	Get(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
@@ -92,6 +93,7 @@ func (c *greeterClient) Del(ctx context.Context, in *HelloRequest, opts ...grpc.
 // for forward compatibility
 type GreeterServer interface {
 	// Gets a greeting for a user.
+	// @Validate
 	List(context.Context, *PageRequest) (*HelloReply, error)
 	// Gets a greeting for a user.
 	Get(context.Context, *HelloRequest) (*HelloReply, error)

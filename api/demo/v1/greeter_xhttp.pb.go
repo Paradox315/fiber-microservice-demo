@@ -33,13 +33,19 @@ type GreeterXHTTPServer interface {
 func RegisterGreeterXHTTPServer(s *xhttp.Server, srv GreeterXHTTPServer) {
 	s.Route(func(r fiber.Router) {
 		api := r.Group("api/demo")
+		// Register all service annotation
 		{
 		}
-		api.Get("/list", _Greeter_List0_XHTTP_Handler(srv))
-		api.Get("/get/:name", _Greeter_Get0_XHTTP_Handler(srv))
-		api.Post("/", _Greeter_Add0_XHTTP_Handler(srv))
-		api.Put("/", _Greeter_Edit0_XHTTP_Handler(srv))
-		api.Delete("/", _Greeter_Del0_XHTTP_Handler(srv))
+		api.Get(
+			"/list", _Greeter_List0_XHTTP_Handler(srv))
+		api.Get(
+			"/get/:name", _Greeter_Get0_XHTTP_Handler(srv))
+		api.Post(
+			"/", _Greeter_Add0_XHTTP_Handler(srv))
+		api.Put(
+			"/", _Greeter_Edit0_XHTTP_Handler(srv))
+		api.Delete(
+			"/", _Greeter_Del0_XHTTP_Handler(srv))
 	})
 }
 
@@ -50,7 +56,9 @@ func _Greeter_List0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		if err := binding.BindQuery(ctx, &in); err != nil {
 			return err
 		}
-
+		if err := in.ValidateAll(); err != nil {
+			return ApiState.InvalidError().SendError(ctx, err.Error())
+		}
 		reply, err := srv.List(ctx.Context(), &in)
 		if err != nil {
 			return err
@@ -66,7 +74,6 @@ func _Greeter_Get0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		if err := binding.BindParams(ctx, &in); err != nil {
 			return err
 		}
-
 		reply, err := srv.Get(ctx.Context(), &in)
 		if err != nil {
 			return err
@@ -82,7 +89,6 @@ func _Greeter_Add0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		if err := binding.BindBody(ctx, &in); err != nil {
 			return err
 		}
-
 		reply, err := srv.Add(ctx.Context(), &in)
 		if err != nil {
 			return err
@@ -98,7 +104,6 @@ func _Greeter_Edit0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		if err := binding.BindBody(ctx, &in); err != nil {
 			return err
 		}
-
 		reply, err := srv.Edit(ctx.Context(), &in)
 		if err != nil {
 			return err
@@ -114,7 +119,6 @@ func _Greeter_Del0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		if err := binding.BindQuery(ctx, &in); err != nil {
 			return err
 		}
-
 		reply, err := srv.Del(ctx.Context(), &in)
 		if err != nil {
 			return err

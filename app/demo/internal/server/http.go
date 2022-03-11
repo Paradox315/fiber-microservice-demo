@@ -1,20 +1,29 @@
 package server
 
 import (
-	v1 "fiber-demo/api/demo/v1"
 	"fiber-demo/app/demo/internal/conf"
 	"fiber-demo/app/demo/internal/service"
+	"fiber-demo/pkg/logutil"
+	"github.com/gofiber/contrib/fiberzap"
+
 	"github.com/go-kratos/kratos/v2/encoding"
 	"github.com/go-kratos/kratos/v2/log"
 	"github.com/go-kratos/kratos/v2/transport/xhttp"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+
+	v1 "fiber-demo/api/demo/v1"
 )
 
-// NewHTTPServer new a HTTP server.
+// NewHTTPServer new a XHTTP server.
 func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *xhttp.Server {
 	var opts = []xhttp.ServerOption{
-		xhttp.Middleware(recover.New()),
+		xhttp.Middleware(
+			recover.New(),
+			fiberzap.New(fiberzap.Config{
+				Logger: logger.(*logutil.Logger).GetZap(),
+			}),
+		),
 		xhttp.FiberConfig(fiber.Config{
 			JSONDecoder: encoding.GetCodec("json").Unmarshal,
 			JSONEncoder: encoding.GetCodec("json").Marshal,

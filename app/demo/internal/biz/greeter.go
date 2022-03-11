@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/jassue/go-storage/storage"
 )
 
 type Greeter struct {
@@ -17,10 +18,11 @@ type GreeterRepo interface {
 type GreeterUsecase struct {
 	repo GreeterRepo
 	log  *log.Helper
+	disk storage.Storage
 }
 
-func NewGreeterUsecase(repo GreeterRepo, logger log.Logger) *GreeterUsecase {
-	return &GreeterUsecase{repo: repo, log: log.NewHelper(logger)}
+func NewGreeterUsecase(repo GreeterRepo, logger log.Logger, disk storage.Storage) *GreeterUsecase {
+	return &GreeterUsecase{repo: repo, log: log.NewHelper(logger), disk: disk}
 }
 
 func (uc *GreeterUsecase) Create(ctx context.Context, g *Greeter) error {

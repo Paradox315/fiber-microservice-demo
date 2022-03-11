@@ -45,7 +45,7 @@ message Logger {
   string prefix = 1;
   string level = 2;
   string format = 3;
-  string directory = 4;
+  string dir = 4;
   string encode_level = 5;
   string stacktrace_key = 6;
   bool show_line = 7;
@@ -58,4 +58,25 @@ message Registry {
     string scheme = 2;
   }
   Consul consul = 1;
+}
+
+message Storage{
+  message Local{
+    string root_dir = 1;
+    string app_url = 2;
+  }
+  message AliOss{
+    string endpoint = 1;
+    string access_key_id = 2;
+    string access_key_secret = 3;
+    string bucket = 4;
+    bool is_ssl = 5;
+    bool is_private = 6;
+  }
+  message Disks{
+    Local local = 1;
+    AliOss ali_oss = 2;
+  }
+  string type = 1;
+  Disks disks = 2;
 }

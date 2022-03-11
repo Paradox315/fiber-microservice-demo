@@ -17,8 +17,8 @@ logger:
   prefix: fiber-demo
   level: info
   format: console
-  directory: log
-  encode_level: CapitalColorLevelEncoder
+  dir: log
+  encode_level: CapitalColor
   stacktrace_key: stacktrace
   show_line: false
   log_in_console: true
