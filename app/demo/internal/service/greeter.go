@@ -20,9 +20,7 @@ func NewGreeterService(uc *biz.GreeterUsecase, logger log.Logger) *GreeterServic
 
 func (s *GreeterService) List(ctx context.Context, req *pb.PageRequest) (*pb.HelloReply, error) {
 	s.log.WithContext(ctx).Infof("List Received: %v", req.String())
-	return &pb.HelloReply{
-		Message: req.String(),
-	}, nil
+	return nil, pb.ErrorUserNotFound("user not found")
 }
 
 func (s *GreeterService) Get(ctx context.Context, req *pb.HelloRequest) (*pb.HelloReply, error) {

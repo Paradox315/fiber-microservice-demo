@@ -8,7 +8,7 @@ import (
 	context "context"
 	middleware "github.com/go-kratos/kratos/v2/middleware"
 	xhttp "github.com/go-kratos/kratos/v2/transport/xhttp"
-	ApiState "github.com/go-kratos/kratos/v2/transport/xhttp/apistate"
+	"github.com/go-kratos/kratos/v2/transport/xhttp/apistate"
 	binding "github.com/go-kratos/kratos/v2/transport/xhttp/binding"
 	"github.com/gofiber/fiber/v2"
 )
@@ -57,13 +57,13 @@ func _Greeter_List0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 			return err
 		}
 		if err := in.ValidateAll(); err != nil {
-			return ApiState.InvalidError().SendError(ctx, err.Error())
+			return apistate.InvalidError().WithError(err).Send(ctx)
 		}
 		reply, err := srv.List(ctx.Context(), &in)
 		if err != nil {
-			return err
+			return apistate.Error().WithError(err).Send(ctx)
 		}
-		return ApiState.Success().SendData(ctx, reply)
+		return apistate.Success().WithData(reply).Send(ctx)
 	}
 }
 
@@ -76,9 +76,9 @@ func _Greeter_Get0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		}
 		reply, err := srv.Get(ctx.Context(), &in)
 		if err != nil {
-			return err
+			return apistate.Error().WithError(err).Send(ctx)
 		}
-		return ApiState.Success().SendData(ctx, reply)
+		return apistate.Success().WithData(reply).Send(ctx)
 	}
 }
 
@@ -91,9 +91,9 @@ func _Greeter_Add0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		}
 		reply, err := srv.Add(ctx.Context(), &in)
 		if err != nil {
-			return err
+			return apistate.Error().WithError(err).Send(ctx)
 		}
-		return ApiState.Success().SendData(ctx, reply)
+		return apistate.Success().WithData(reply).Send(ctx)
 	}
 }
 
@@ -106,9 +106,9 @@ func _Greeter_Edit0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		}
 		reply, err := srv.Edit(ctx.Context(), &in)
 		if err != nil {
-			return err
+			return apistate.Error().WithError(err).Send(ctx)
 		}
-		return ApiState.Success().SendData(ctx, reply)
+		return apistate.Success().WithData(reply).Send(ctx)
 	}
 }
 
@@ -121,8 +121,8 @@ func _Greeter_Del0_XHTTP_Handler(srv GreeterXHTTPServer) fiber.Handler {
 		}
 		reply, err := srv.Del(ctx.Context(), &in)
 		if err != nil {
-			return err
+			return apistate.Error().WithError(err).Send(ctx)
 		}
-		return ApiState.Success().SendData(ctx, reply)
+		return apistate.Success().WithData(reply).Send(ctx)
 	}
 }

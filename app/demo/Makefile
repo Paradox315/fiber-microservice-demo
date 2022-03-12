@@ -28,7 +28,7 @@ init:
 errors:
 	cd ../../ && protoc --proto_path=. \
            --proto_path=./third_party \
-           --gofast_out=paths=source_relative:. \
+           --gogofaster_out=paths=source_relative:. \
            --go-errors_out=paths=source_relative:. \
            $(ERROR_PROTO_FILES)
 
